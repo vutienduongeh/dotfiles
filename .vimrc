@@ -35,6 +35,11 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-scripts/git-time-lapse'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'shime/vim-livedown'
+Plug 'kylef/apiblueprint.vim'
+"Plug 'gabrielelana/vim-markdown'
 if has('nvim')
   Plug 'awetzel/elixir.nvim', { 'do': 'yes \| ./install.sh' }
   Plug 'slashmili/alchemist.vim'
@@ -75,33 +80,20 @@ set encoding=utf8
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types:h11
 set background=dark
 set textwidth=80
+set relativenumber
 colorscheme bubblegum
-" Fix left bar display
-hi CursorLineNr guifg=#66afce ctermfg=74 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-hi CursorLine guifg=NONE ctermfg=NONE guibg=#323232 ctermbg=236 gui=NONE cterm=NONE
-hi LineNr guifg=#444444 ctermfg=238 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 " Fix iterm display
 let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
 let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
 let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 "========================================================
-" CONFIG CTRLP
-"========================================================
-if exists("g:ctrlp_user_command")
-unlet g:ctrlp_user_command
-endif
-let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\.git$\|\.sass-cache$|\.hg$\|\.svn$\|\.yardoc\|public$\|log$\|tmp$\|node_modules$\|vendor$',
-    \ 'file': '\.so$\|\.dat$|\.DS_Store$'
-    \ }
-"========================================================
 " CONFIG AIRLINE
 "========================================================
 let g:Powerline_symbols = 'fancy'
 let g:airline_powerline_fonts = 1
-if !exists('g:airline_symbols')
 let g:airline_symbols = {}
+if !exists('g:airline_symbols')
 endif
 let g:airline_symbols.space = "\ua0"
 let s:spc = g:airline_symbols.space
@@ -114,6 +106,7 @@ endfunction
 " CONFIG NEOMAKE
 "========================================================
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_javascript_eslint_exe = system('PATH=$(npm bin):$PATH && which eslint | tr -d "\n"')
 let g:neomake_ruby_enabled_makers = ['rubocop']
 let g:neomake_error_sign = {'text': '💧 ', 'texthl': 'NeomakeWarningMsg'}
 let g:neomake_warning_sign = {'text': '💧 ', 'texthl': 'NeomakeErrorMsg'}
@@ -121,7 +114,7 @@ let g:neomake_warning_sign = {'text': '💧 ', 'texthl': 'NeomakeErrorMsg'}
 " CONFIG DEOPLETE
 "========================================================
 if !exists('g:deoplete#omni#input_patterns')
-let g:deoplete#omni#input_patterns = {}
+  let g:deoplete#omni#input_patterns = {}
 endif
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_ignore_case = 'ignorecase'
@@ -156,8 +149,8 @@ let g:gitgutter_sign_modified_removed = '🐾'
 "========================================================
 " CONFIG MARKDOWN
 "========================================================
-let vim_markdown_preview_hotkey='<C-m>'
-let vim_markdown_preview_github=1
+nmap <leader>md :LivedownPreview<CR>
+let g:markdown_enable_spell_checking = 0
 "========================================================
 " CONFIG MISC
 "========================================================
@@ -178,10 +171,14 @@ if has("autocmd")
   autocmd BufWritePre * StripWhitespace
   autocmd BufWritePost * Neomake
   autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+  autocmd FileType markdown set textwidth=80
+  autocmd FileType markdown set formatoptions-=t
 endif
 let g:webdevicons_enable_ctrlp = 1
 let g:move_key_modifier = 'C'
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.html.eex,*.html.erb"
+let g:jsx_ext_required = 0
+let g:fzf_tags_command = 'ctags -R --exclude=.git --exclude=node_modules'
 "========================================================
 " FUNCTIONS
 "========================================================
@@ -212,6 +209,12 @@ function! NumberToggle()
     set relativenumber
   endif
 endfunc
+function! AgInFolder()
+  call inputsave()
+  let dir = input('Enter folder to search in: ')
+  call inputrestore()
+  call fzf#vim#ag(dir, "", fzf#vim#layout(expand("<bang>0")))
+endfunction
 "========================================================
 " MAPPING VIM-RAILS
 "========================================================
@@ -226,6 +229,7 @@ map <c-o> <ESC>:Tags<CR>
 map <c-h> <ESC>:History<CR>
 map <silent> <leader>/ <ESC>:BLines<CR>
 map <leader>ag <ESC>:Ag<space>
+map <leader>as <ESC>:call AgInFolder()<CR>
 map <silent> <leader>aa <ESC>:call fzf#vim#ag(expand("<cword>"), fzf#vim#layout(expand("<bang>0")))<cr>
 map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"), fzf#vim#layout(expand("<bang>0")))<cr>
 map <silent> <leader>mm <ESC>:Commands<CR>
@@ -273,7 +277,6 @@ map <silent> gt :call TimeLapse() <cr>
 "========================================================
 " MAPPING MISC
 "========================================================
-map <silent> q :q<CR>
 map <silent> <leader>urt <ESC>:call URT()<CR>
 map <silent> <leader>uet <ESC>:call UET()<CR>
 nnoremap <silent> <CR> <ESC>:noh<CR>
@@ -281,6 +284,7 @@ map <silent> <leader>q <ESC>:q<CR>
 map <silent> <leader>i <ESC>:call IndentGuideToggle()<CR>
 map <silent> <leader>' cs'"
 map <silent> <leader>" cs"'
+map <silent> <leader>hi :History<CR>
 map <silent> <leader><leader> <C-^><CR>
 map <silent> <leader>u :UndotreeToggle<CR>
 map <silent> <space>h <C-W><C-H>
@@ -288,7 +292,7 @@ map <silent> <space>j <C-W><C-J>
 map <silent> <space>k <C-W><C-K>
 map <silent> <space>l <C-W><C-L>
 map <space><space> <ESC>:w<CR>
-map <silent> <leader>path :let @+=expand("%:p")<CR>
+map <silent> <leader>path :let @+=@%<CR>
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
