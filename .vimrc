@@ -288,6 +288,7 @@ map <silent> <space>h <C-W><C-H>
 map <silent> <space>j <C-W><C-J>
 map <silent> <space>k <C-W><C-K>
 map <silent> <space>l <C-W><C-L>
+map <silent> <leader>wq <C-W>q
 map <silent> <leader>path :let @+=@%<CR>
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
