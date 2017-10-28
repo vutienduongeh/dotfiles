@@ -190,12 +190,18 @@ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git --ignore node_modules -l -
 " FUNCTIONS
 "========================================================
 " Update ruby ctags
-function! URT()
+function! UpdateFullRubyTags()
   return system('ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)')
 endfunction
-function! UET()
+
+function! UpdateRubyTags()
+  return system('ctags -R --languages=ruby --exclude=.git --exclude=log .')
+endfunction
+
+function! UpdateElixirTags()
   return system('ctags -R --languages=elixir --exclude=.git --exclude=log .')
 endfunction
+
 " Toogle indents
 function! IndentGuideToggle()
   let g:indent_guide_displayed = get(g:, 'indent_guide_displayed', '0')
@@ -222,9 +228,10 @@ endfunc
 map <c-p> <ESC>:Files<CR>
 map <c-o> <ESC>:Tags<CR>
 map <c-h> <ESC>:History<CR>
+map <c-b> <ESC>:ls<CR>
 map <silent> <leader>/ <ESC>:BLines<CR>
 map <leader>ag <ESC>:Ag<space>
-map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"), fzf#vim#layout(expand("<bang>0")))<cr>
+map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"))<cr>
 map <silent> <leader>mm <ESC>:Commands<CR>
 "========================================================
 " MAPPING NERDTree
@@ -263,8 +270,9 @@ map <silent> gt :call TimeLapse() <cr>
 "========================================================
 " MAPPING MISC
 "========================================================
-map <silent> <leader>urt <ESC>:call URT()<CR>
-map <silent> <leader>uet <ESC>:call UET()<CR>
+map <leader>urt <ESC>:call UpdateRubyTags()<CR>
+map <leader>ufrt <ESC>:call UpdateFullRubyTags()<CR>
+map <leader>uet <ESC>:call UpdateElixirTags()<CR>
 nnoremap <silent> <CR> <ESC>:noh<CR>
 map <silent> <leader>i <ESC>:call IndentGuideToggle()<CR>
 map <silent> <leader>' cs'"
