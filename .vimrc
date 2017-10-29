@@ -88,6 +88,7 @@ let g:airline_symbols = {}
 if !exists('g:airline_symbols')
 endif
 let g:airline_symbols.space = "\ua0"
+let g:airline_symbols.readonly = 'R'
 let s:spc = g:airline_symbols.space
 function! AirlineInit()
   let g:airline_section_a = airline#section#create(['%{toupper(mode())}'])
@@ -233,7 +234,11 @@ endfunc
 map <c-p> <ESC>:Files<CR>
 map <c-o> <ESC>:Tags<CR>
 map <c-h> <ESC>:History<CR>
-map <c-b> <ESC>:ls<CR>
+map <c-b>l <ESC>:ls<CR>
+map <c-b>n <ESC>:bn<CR>
+map <c-b>p <ESC>:bp<CR>
+map <c-b>d <ESC>:bd<CR>
+map <c-b>b <ESC>:b<SPACE>
 map <silent> <leader>/ <ESC>:BLines<CR>
 map <leader>ag <ESC>:Ag<space>
 map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"))<cr>
