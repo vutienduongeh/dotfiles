@@ -16,6 +16,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'airblade/vim-gitgutter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'bruno-/vim-ruby-fold'
 Plug 'tpope/vim-rails'
 Plug 'flazz/vim-colorschemes'
 Plug 'jiangmiao/auto-pairs'
@@ -234,11 +235,11 @@ endfunc
 map <c-p> <ESC>:Files<CR>
 map <c-o> <ESC>:Tags<CR>
 map <c-h> <ESC>:History<CR>
-map <c-b>l <ESC>:ls<CR>
-map <c-b>n <ESC>:bn<CR>
-map <c-b>p <ESC>:bp<CR>
-map <c-b>d <ESC>:bd<CR>
-map <c-b>b <ESC>:b<SPACE>
+map <Leader>bl <ESC>:Buffers<CR>
+map <Leader>bn <ESC>:bn<CR>
+map <Leader>bp <ESC>:bp<CR>
+map <Leader>bd <ESC>:bd<CR>
+map <Leader>bb <ESC>:b<SPACE>
 map <silent> <leader>/ <ESC>:BLines<CR>
 map <leader>ag <ESC>:Ag<space>
 map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"))<cr>
@@ -276,7 +277,7 @@ nmap ga <Plug>(EasyAlign)
 "========================================================
 map <silent> gb :Gblame<CR>
 map <silent> ghub :Gbrowse<CR>
-map <silent> gt :call TimeLapse() <cr>
+map <silent> gy :call TimeLapse() <cr>
 "========================================================
 " MAPPING MISC
 "========================================================
@@ -302,6 +303,9 @@ noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 noremap <silent> <expr> ^ (v:count == 0 ? 'g^' : '^')
 noremap <silent> <expr> $ (v:count == 0 ? 'g$' : '^')
+
+nnoremap <leader>s :w<cr>
+inoremap <leader>s <C-c>:w<cr>
 if has("nvim")
   tnoremap <c-e> <C-\><C-n>
 end
