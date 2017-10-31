@@ -11,10 +11,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
-Plug 'tomtom/tcomment_vim'
+Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
 Plug 'airblade/vim-gitgutter'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'bruno-/vim-ruby-fold'
 Plug 'tpope/vim-rails'
@@ -25,7 +24,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
 Plug 'mbbill/undotree'
 Plug 'ryanoasis/vim-devicons'
-Plug 'elixir-lang/vim-elixir'
 Plug 'janko-m/vim-test'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
@@ -36,12 +34,8 @@ Plug 'vim-scripts/git-time-lapse'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-Plug 'zchee/deoplete-go', { 'do': 'make'}
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'carlitux/deoplete-ternjs'
-Plug 'fatih/vim-go'
 call plug#end()
 syntax on
 filetype on
@@ -59,7 +53,6 @@ set nofoldenable
 set tags=./tags;,tags;
 set ruler
 set number
-set wrap linebreak nolist
 set expandtab
 set autoindent
 set clipboard=unnamed
@@ -71,7 +64,7 @@ set laststatus=2
 set encoding=utf8
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types:h11
 set background=dark
-set textwidth=80
+set textwidth=100
 set relativenumber
 set bs=2 tabstop=2 shiftwidth=2 softtabstop=2
 colorscheme bubblegum
@@ -86,15 +79,14 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 let g:Powerline_symbols = 'fancy'
 let g:airline_powerline_fonts = 1
 let g:airline_symbols = {}
-if !exists('g:airline_symbols')
-endif
 let g:airline_symbols.space = "\ua0"
 let g:airline_symbols.readonly = 'R'
 let s:spc = g:airline_symbols.space
+let g:airline_symbols.linenr = ''
 function! AirlineInit()
   let g:airline_section_a = airline#section#create(['%{toupper(mode())}'])
   let g:airline_section_b = airline#section#create([''])
-  let g:airline_section_z = airline#section#create(['%p%%'])
+  let g:airline_section_z = airline#section#create(['%3p%%', '|', 'linenr', ':%c '])
 endfunction
 "========================================================
 " CONFIG ALE
@@ -108,8 +100,8 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_set_highlights = 0
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
+let g:ale_set_loclist = 1
+"let g:ale_set_quickfix = 1
 map <silent> <leader>ln :ALENext<CR>
 map <silent> <leader>lp :ALEPrevious<CR>
 "========================================================
@@ -160,12 +152,11 @@ let g:gitgutter_sign_modified_removed = '_'
 "========================================================
 let g:AutoPairsFlyMode = 1
 let g:AutoPairsShortcutBackInsert = '<M-b>'
+let g:AutoPairsMultilineClose = 0
+let g:indentLine_enabled = 0
 "========================================================
 " CONFIG MISC
 "========================================================
-" Auto pair
-let g:AutoPairsMultilineClose = 0
-let g:indentLine_enabled = 0
 " Tmux navigation
 let g:tmux_navigator_no_mappings = 1
 " Rpsec config
@@ -232,14 +223,9 @@ endfunc
 "========================================================
 " MAPPING FZF
 "========================================================
-map <c-p> <ESC>:Files<CR>
-map <c-o> <ESC>:Tags<CR>
-map <c-h> <ESC>:History<CR>
-map <Leader>bl <ESC>:Buffers<CR>
-map <Leader>bn <ESC>:bn<CR>
-map <Leader>bp <ESC>:bp<CR>
-map <Leader>bd <ESC>:bd<CR>
-map <Leader>bb <ESC>:b<SPACE>
+map <leader>f <ESC>:Files<CR>
+map <leader>h <ESC>:History<CR>
+map <Leader>b <ESC>:Buffers<CR>
 map <silent> <leader>/ <ESC>:BLines<CR>
 map <leader>ag <ESC>:Ag<space>
 map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"))<cr>
@@ -284,7 +270,7 @@ map <silent> gy :call TimeLapse() <cr>
 map <leader>urt <ESC>:call UpdateRubyTags()<CR>
 map <leader>ufrt <ESC>:call UpdateFullRubyTags()<CR>
 map <leader>uet <ESC>:call UpdateElixirTags()<CR>
-nnoremap <silent> <CR> <ESC>:noh<CR>
+nnoremap <silent> <Leader><CR> <ESC>:noh<CR>
 map <silent> <leader>i <ESC>:call IndentGuideToggle()<CR>
 map <silent> <leader>' cs'"
 map <silent> <leader>" cs"'
