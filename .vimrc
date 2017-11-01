@@ -83,6 +83,23 @@ let g:airline_symbols.space = "\ua0"
 let g:airline_symbols.readonly = 'R'
 let s:spc = g:airline_symbols.space
 let g:airline_symbols.linenr = ''
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+let g:airline#extensions#hunks#enabled = 0
+let g:airline#extensions#bufferline#enabled = 0
+let g:airline#extensions#bufferline#overwrite_variables = 1
+let g:bufferline_echo = 0
+let g:bufferline_rotate = 1
+let g:bufferline_fname_mod = ':f'
 function! AirlineInit()
   let g:airline_section_a = airline#section#create(['%{toupper(mode())}'])
   let g:airline_section_b = airline#section#create([''])
@@ -244,7 +261,7 @@ map <Leader>tt :TestFile<CR>
 map <Leader>ts :TestNearest<CR>
 map <Leader>tl :TestLast<CR>
 map <Leader>ta :TestSuite<CR>
-let test#ruby#rspec#executable = 'rspec'
+let test#ruby#rspec#executable = 'bundle exec rspec'
 "========================================================
 " MAPPING EASYMOTION
 "========================================================
