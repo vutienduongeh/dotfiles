@@ -19,6 +19,7 @@ Plug 'ntpeters/vim-better-whitespace'
 "Plug 'bruno-/vim-ruby-fold'
 Plug 'tpope/vim-rails'
 Plug 'flazz/vim-colorschemes'
+Plug 'kchmck/vim-coffee-script'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
@@ -32,6 +33,8 @@ Plug 'matze/vim-move'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-scripts/git-time-lapse'
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript'
@@ -63,7 +66,6 @@ set laststatus=2
 set encoding=utf8
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types:h11
 set background=dark
-set textwidth=100
 set relativenumber
 set bs=2 tabstop=2 shiftwidth=2 softtabstop=2
 colorscheme bubblegum
@@ -123,6 +125,20 @@ set completeopt+=noselect
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#disable_auto_complete = 0
 let g:deoplete#enable_ignore_case = 'ignorecase'
+let g:go_def_mode = "guru"
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+let g:deoplete#sources = {}
+let g:deoplete#sources_ = ['buffer','tag']
+imap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+\ : (<SID>is_whitespace() ? "\<Tab>"
+\ : deoplete#mappings#manual_complete()))
+smap <silent><expr><Tab> pumvisible() ? "\<C-n>"
+\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+\ : (<SID>is_whitespace() ? "\<Tab>"
+\ : deoplete#mappings#manual_complete()))
 inoremap <expr><S-Tab>  pumvisible() ? "\<C-p>" : "\<C-h>"
 function! s:is_whitespace() "{{{
 let col = col('.') - 1
@@ -263,14 +279,6 @@ map <silent> <space>k <C-W><C-K>
 map <silent> <space>l <C-W><C-L>
 map <silent> <leader>wq <C-W>q
 map <silent> <leader>path :let @+=@%<CR>
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
-noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
-noremap <silent> <expr> ^ (v:count == 0 ? 'g^' : '^')
-noremap <silent> <expr> $ (v:count == 0 ? 'g$' : '^')
-
 nnoremap <leader>s :w<cr>
 inoremap <leader>s <C-c>:w<cr>
 if has("nvim")
