@@ -36,8 +36,20 @@ Plug 'vim-scripts/git-time-lapse'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+Plug 'christoomey/vim-tmux-navigator'
+" if has('nvim')
+"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"else
+" Plug 'Shougo/deoplete.nvim'
+"  Plug 'roxma/nvim-yarp'
+"  Plug 'roxma/vim-hug-neovim-rpc'
+" endif
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'alvan/vim-closetag'
+Plug 'vim-syntastic/syntastic'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 call plug#end()
 syntax on
 filetype on
@@ -49,6 +61,7 @@ set ruler
 set linespace=1
 set gfn=DejaVu\ Sans\ Mono\ for\ Powerline:h13
 let g:auto_ctags = 1
+let g:prettier#autoformat = 0
 set wrap linebreak nolist
 set breakindent
 set nofoldenable
@@ -69,6 +82,7 @@ set background=dark
 set relativenumber
 set bs=2 tabstop=2 shiftwidth=2 softtabstop=2
 colorscheme bubblegum
+" colorscheme afterglow
 " Fix iterm display
 let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
 let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
@@ -85,6 +99,9 @@ let g:airline_symbols.readonly = 'R'
 let s:spc = g:airline_symbols.space
 let g:airline_symbols.linenr = ''
 let g:airline#extensions#tabline#enabled = 1
+
+" explicit set afterglow for airline
+"let g:airline_theme='afterglow'
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
@@ -118,6 +135,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 "let g:ale_set_quickfix = 1
 map <silent> <leader>ln :ALENext<CR>
 map <silent> <leader>lp :ALEPrevious<CR>
+map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"), fzf#vim#layout(expand("<bang>0")))<cr>
 "========================================================
 " CONFIG DEOPLETE
 "========================================================
@@ -152,6 +170,17 @@ let g:AutoPairsShortcutBackInsert = '<M-b>'
 let g:AutoPairsMultilineClose = 0
 let g:indentLine_enabled = 0
 "========================================================
+" CONFIG tab
+"========================================================
+nnoremap th  :tabfirst<CR>
+nnoremap tk  :tabnext<CR>
+nnoremap tj  :tabprev<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit<Space>
+nnoremap tn  :tabnew<Space>
+nnoremap tm  :tabm<Space>
+nnoremap td  :tabclose<CR>
+"========================================================
 " CONFIG MISC
 "========================================================
 " Tmux navigation
@@ -174,6 +203,7 @@ if has("autocmd")
   autocmd FileType markdown set textwidth=80
   autocmd FileType markdown set formatoptions-=t
   autocmd Filetype cpp setlocal ts=4 sw=4 sts=0 expandtab
+  autocmd BufWritePre *.js,*.jsx PrettierAsync
 endif
 let g:webdevicons_enable_ctrlp = 1
 let g:move_key_modifier = 'C'
@@ -228,6 +258,10 @@ map <leader>ag <ESC>:Ag<space>
 map <c-]> <ESC>:call fzf#vim#tags(expand("<cword>"))<cr>
 map <silent> <leader>mm <ESC>:Commands<CR>
 "========================================================
+" MAPPING Rubocop
+"========================================================
+map <leader>rbc <ESC>:! rubocop <space>
+"========================================================
 " MAPPING NERDTree
 "========================================================
 map <silent> <leader>ls <ESC>:NERDTreeToggle<CR>
@@ -249,12 +283,15 @@ let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 map / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
-nmap <silent> <tab> <Plug>(easymotion-w)
+nmap <silent> <tab> <Plug>(easymotion-overwin-w)
 "========================================================
 " MAPPING EASYALIGN
 "========================================================
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+nmap ,cs :let @*=expand("%")<CR>
+nmap ,cl :let @*=expand("%:p")<CR>
 "========================================================
 " MAPPING GIT
 "========================================================
@@ -281,6 +318,7 @@ map <silent> <leader>wq <C-W>q
 map <silent> <leader>path :let @+=@%<CR>
 nnoremap <leader>s :w<cr>
 inoremap <leader>s <C-c>:w<cr>
+inoremap { {<CR>}<Esc>ko
 if has("nvim")
   tnoremap <c-e> <C-\><C-n>
 end
