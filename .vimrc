@@ -14,9 +14,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'ap/vim-css-color'
 Plug 'scrooloose/nerdcommenter'
 Plug 'easymotion/vim-easymotion'
-"Plug 'airblade/vim-gitgutter'
 Plug 'ntpeters/vim-better-whitespace'
-"Plug 'bruno-/vim-ruby-fold'
 Plug 'tpope/vim-rails'
 Plug 'flazz/vim-colorschemes'
 Plug 'kchmck/vim-coffee-script'
@@ -38,13 +36,8 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
-" if has('nvim')
-"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"else
-" Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-" endif
+Plug 'galooshi/vim-import-js'
+
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -52,6 +45,17 @@ Plug 'alvan/vim-closetag'
 Plug 'vim-syntastic/syntastic'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 call plug#end()
+
+"Plug 'airblade/vim-gitgutter'
+"Plug 'bruno-/vim-ruby-fold'
+"if has('nvim')
+"Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"else
+"Plug 'Shougo/deoplete.nvim'
+"Plug 'roxma/nvim-yarp'
+"Plug 'roxma/vim-hug-neovim-rpc'
+"endif
+
 syntax on
 filetype on
 filetype indent on
@@ -325,3 +329,5 @@ inoremap { {<CR>}<Esc>ko
 if has("nvim")
   tnoremap <c-e> <C-\><C-n>
 end
+" Import current word
+nmap <leader>ip :ImportJSFix<cr>
