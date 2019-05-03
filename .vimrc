@@ -37,6 +37,7 @@ Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
 " if has('nvim')
 "  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "else
@@ -186,7 +187,7 @@ nnoremap td  :tabclose<CR>
 " Tmux navigation
 let g:tmux_navigator_no_mappings = 1
 " Rpsec config
-let test#strategy = "neovim"
+let test#strategy = "vimux"
 " Solve vim ESC delay
 set timeoutlen=1000 ttimeoutlen=0
 if has("autocmd")
@@ -317,6 +318,8 @@ map <silent> <space>l <C-W><C-L>
 map <silent> <leader>wq <C-W>q
 map <silent> <leader>path :let @+=@%<CR>
 nnoremap <leader>s :w<cr>
+nnoremap <leader>q :q<cr>
+nnoremap <leader>qa :qa<cr>
 inoremap <leader>s <C-c>:w<cr>
 inoremap { {<CR>}<Esc>ko
 if has("nvim")
