@@ -43,11 +43,15 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'alvan/vim-closetag'
 Plug 'vim-syntastic/syntastic'
+"Plug 'prettier/vim-prettier', {
+      "\ 'do': 'yarn install',
+      "\ 'for': ['typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'andreypopp/vim-colors-plain'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'robertmeta/nofrils'
 call plug#end()
 
 "Plug 'airblade/vim-gitgutter'
@@ -92,13 +96,20 @@ set relativenumber
 set bs=2 tabstop=2 shiftwidth=2 softtabstop=2
 " colorscheme bubblegum
 " colorscheme afterglow
-colorscheme neodark
+colorscheme nofrils-dark
+" colorscheme neodark
 " colorscheme plain
 " Fix iterm display
 let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
 let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
 let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+"========================================================
+" CONFIG NOFRILS-DARK THEME
+"========================================================
+let g:nofrils_strbackgrounds=1
+hi String ctermfg=247 guifg=#9e9e9e
+hi Directory ctermfg=white
 "========================================================
 " CONFIG AIRLINE
 "========================================================
