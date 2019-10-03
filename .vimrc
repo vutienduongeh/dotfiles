@@ -52,6 +52,7 @@ Plug 'andreypopp/vim-colors-plain'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'robertmeta/nofrils'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 "Plug 'airblade/vim-gitgutter'
