@@ -37,6 +37,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 Plug 'galooshi/vim-import-js'
+Plug 'rhysd/devdocs.vim'
 
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript'
@@ -349,3 +350,8 @@ if has("nvim")
 end
 " Import current word
 nmap <leader>ip :ImportJSFix<cr>
+nmap K <Plug>(devdocs-under-cursor)
+command! -nargs=* DevDocsReact call devdocs#open_doc(<q-args>, 'react')
+command! -nargs=* DevDocsRails call devdocs#open_doc(<q-args>, 'rails')
+map <leader>K <ESC>:DevDocsRails<space>
+let g:devdocs_open_cmd = 'open -a Safari'
